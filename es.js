@@ -1,4 +1,4 @@
-const es_current = {
+const current = {
   "country": "ES",
   "segments": [
       {
@@ -6,11 +6,12 @@ const es_current = {
           "length": 4
       },
       {
-          "type": "ALPHA", // TODO Implement proper validation (only B, C, D, F, G, H, J, K, L, M, N, P, R, S, T, V, W, X, Y and Z)
-          "length": 3
+          "type": "ALPHA_RESTRICTED",
+          "length": 3,
+          "allowed": ["B","C","D","F","G","H","J","K","L","M","N","P","R","S","T","V","W","X","Y","Z"]
       }
   ]
 }
 
-const es_templates = [es_current]
-module.exports = es_templates
+const templates = [current]
+module.exports = templates

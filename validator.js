@@ -1,13 +1,37 @@
-const es_templates = require('./es');
+const esTemplates = require('./es');
 
 const templates = new Map([
-    ["ES", es_templates]
+    ["ES", esTemplates]
 ])
 
-const segment_validators = new Map([
-    ["NUMERIC", /^[0-9]+$/i],
-    ["ALPHA", /^[A-Z]+/i]
+const segmentValidators = new Map([
+    ["NUMERIC", validateNumericSegment],
+    ["ALPHA", validateAlphaSegment],
+    ["ALPHA_RESTRICTED", validateAlphaRestrictedSegment]
 ])
+
+function validateNumericSegment(plateSegment, numericTemplate) {
+    return plateSegment.search(/^[0-9]+$/i) >= 0 && plateSegment.length == numericTemplate.length
+}
+
+function validateAlphaSegment(plateSegment, alphaTemplate) {
+    return plateSegment.search(/^[A-Z]+/i) >= 0 && plateSegment.length == alphaTemplate.length
+}
+
+function validateAlphaRestrictedSegment(plateSegment, alphaTemplate) {
+    if (plateSegment.length != alphaTemplate.length) {
+        return false
+    }
+
+    for (i in plateSegment) {
+        var char = plateSegment[i]
+        if (!alphaTemplate.allowed.includes(char)) {
+            return false
+        }
+    }
+
+    return true
+}
 
 function validatePlate(country, plate) {
     if (!templates.has(country)) {
@@ -29,19 +53,16 @@ function validatePlateAgainstTemplate(plate, template) {
     var remainder = plate;
     var remainderIdx = 0
     for (i in template.segments) {
-        var segment = template.segments[i]
+        var templateSegment = template.segments[i]
+        var plateSegment = remainder.substr(0, templateSegment.length);
 
-        var plate_segment = remainder.substr(0, segment.length);
-        // Assumption: template is well-formed (i.e. there is a validator for the segment type)
-        var plate_segment_invalid = plate_segment.search(segment_validators.get(segment.type)) < 0
-        var plate_segment_length_invalid = plate_segment.length != segment.length
-
-        if (plate_segment_invalid || plate_segment_length_invalid) {
+        var plateSegmentValid = segmentValidators.get(templateSegment.type)(plateSegment, templateSegment)
+        if (!plateSegmentValid) {
             return false;
         }
 
-        remainder = plate.substr(remainderIdx + segment.length)
-        remainderIdx = remainderIdx + segment.length
+        remainder = plate.substr(remainderIdx + templateSegment.length)
+        remainderIdx = remainderIdx + templateSegment.length
     }
 
     return remainder.length == 0;
