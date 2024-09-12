@@ -1,0 +1,17 @@
+{
+  "name": "pl8s",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javicg/pl8s.git"
+  },
+  "author": "Francisco Javier Carretero Garcia",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
