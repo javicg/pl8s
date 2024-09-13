@@ -1,4 +1,4 @@
-const esTemplates = require('./es');
+const esTemplates = require('./es')
 
 const templates = new Map([
     ["ES", esTemplates]
@@ -14,33 +14,33 @@ const processors = new Map([
 function processNumericSegment(tail, numericTemplate) {
     var valid = false
     if (tail.length >= numericTemplate.length) {
-        segment = tail.substr(0, numericTemplate.length);
+        segment = tail.substr(0, numericTemplate.length)
         valid = segment.search(/^[0-9]+$/i) >= 0
     }
 
     return {
         "valid": valid,
         "tail": tail.substr(numericTemplate.length)
-    };
+    }
 }
 
 function processAlphaSegment(tail, alphaTemplate) {
     var valid = false
     if (tail.length >= alphaTemplate.length) {
-        segment = tail.substr(0, alphaTemplate.length);
+        segment = tail.substr(0, alphaTemplate.length)
         valid = segment.search(/^[A-Z]+/i) >= 0
     }
 
     return {
         "valid": valid,
         "tail": tail.substr(alphaTemplate.length)
-    };
+    }
 }
 
 function processAlphaRestrictedSegment(tail, alphaTemplate) {
     var valid = true
     if (tail.length >= alphaTemplate.length) {
-        segment = tail.substr(0, alphaTemplate.length);
+        segment = tail.substr(0, alphaTemplate.length)
         for (i in segment) {
             var char = segment[i]
             if (!alphaTemplate.allowed.includes(char)) {
@@ -74,7 +74,7 @@ function processEnumeration(tail, enumTemplate) {
 
 function validatePlate(country, plate) {
     if (!templates.has(country)) {
-        return false;
+        return false
     }
 
     for(i in templates.get(country)) {
@@ -88,19 +88,19 @@ function validatePlate(country, plate) {
 }
 
 function validatePlateAgainstTemplate(plate, template) {
-    var remainder = plate;
+    var remainder = plate
     for (i in template.segments) {
         var templateSegment = template.segments[i]
 
         var result = processors.get(templateSegment.type)(remainder, templateSegment)
         if (!result.valid) {
-            return false;
+            return false
         }
 
         remainder = result.tail
     }
 
-    return remainder.length == 0;
+    return remainder.length == 0
 }
 
-module.exports = validatePlate;
+module.exports = validatePlate

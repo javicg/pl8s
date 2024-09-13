@@ -38,12 +38,12 @@ describe("spanish plates", () => {
 
 function valid(plate) {
   test("[OK] "+plate, () => {
-    expect(validatePlate("ES", plate)).toBe(true);
-  });
+    expect(validatePlate("ES", plate)).toBe(true)
+  })
 }
 
 function invalid(plate) {
   test("[NOK] "+plate, () => {
-    expect(validatePlate("ES", plate)).toBe(false);
-  });
+    expect(validatePlate("ES", plate)).toBe(false)
+  })
 }
