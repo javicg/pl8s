@@ -56,5 +56,4 @@ const current = {
   ]
 }
 
-const templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter]
-module.exports = templates
+exports.templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter]

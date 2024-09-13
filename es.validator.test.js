@@ -1,4 +1,4 @@
-const validatePlate = require('./validator');
+const validator = require('./validator')
 
 describe("spanish plates", () => {
   describe("current system", () => {
@@ -38,12 +38,12 @@ describe("spanish plates", () => {
 
 function valid(plate) {
   test("[OK] "+plate, () => {
-    expect(validatePlate("ES", plate)).toBe(true)
+    expect(validator.validatePlate("ES", plate)).toBe(true)
   })
 }
 
 function invalid(plate) {
   test("[NOK] "+plate, () => {
-    expect(validatePlate("ES", plate)).toBe(false)
+    expect(validator.validatePlate("ES", plate)).toBe(false)
   })
 }

@@ -1,7 +1,7 @@
-const esTemplates = require('./es')
+const es = require('./es')
 
 const templates = new Map([
-    ["ES", esTemplates]
+    ["ES", es.templates]
 ])
 
 const processors = new Map([
@@ -103,4 +103,4 @@ function validatePlateAgainstTemplate(plate, template) {
     return remainder.length == 0
 }
 
-module.exports = validatePlate
+exports.validatePlate = validatePlate
