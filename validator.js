@@ -4,33 +4,56 @@ const templates = new Map([
     ["ES", esTemplates]
 ])
 
-const segmentValidators = new Map([
-    ["NUMERIC", validateNumericSegment],
-    ["ALPHA", validateAlphaSegment],
-    ["ALPHA_RESTRICTED", validateAlphaRestrictedSegment]
+const processors = new Map([
+    ["NUMERIC", processNumericSegment],
+    ["ALPHA", processAlphaSegment],
+    ["ALPHA_RESTRICTED", processAlphaRestrictedSegment]
 ])
 
-function validateNumericSegment(plateSegment, numericTemplate) {
-    return plateSegment.search(/^[0-9]+$/i) >= 0 && plateSegment.length == numericTemplate.length
-}
-
-function validateAlphaSegment(plateSegment, alphaTemplate) {
-    return plateSegment.search(/^[A-Z]+/i) >= 0 && plateSegment.length == alphaTemplate.length
-}
-
-function validateAlphaRestrictedSegment(plateSegment, alphaTemplate) {
-    if (plateSegment.length != alphaTemplate.length) {
-        return false
+function processNumericSegment(tail, numericTemplate) {
+    var valid = false
+    if (tail.length >= numericTemplate.length) {
+        segment = tail.substr(0, numericTemplate.length);
+        valid = segment.search(/^[0-9]+$/i) >= 0
     }
 
-    for (i in plateSegment) {
-        var char = plateSegment[i]
-        if (!alphaTemplate.allowed.includes(char)) {
-            return false
+    return {
+        "valid": valid,
+        "tail": tail.substr(numericTemplate.length)
+    };
+}
+
+function processAlphaSegment(tail, alphaTemplate) {
+    var valid = false
+    if (tail.length >= alphaTemplate.length) {
+        segment = tail.substr(0, alphaTemplate.length);
+        valid = segment.search(/^[A-Z]+/i) >= 0
+    }
+
+    return {
+        "valid": valid,
+        "tail": tail.substr(alphaTemplate.length)
+    };
+}
+
+function processAlphaRestrictedSegment(tail, alphaTemplate) {
+    var valid = true
+    if (tail.length >= alphaTemplate.length) {
+        segment = tail.substr(0, alphaTemplate.length);
+        for (i in segment) {
+            var char = segment[i]
+            if (!alphaTemplate.allowed.includes(char)) {
+                valid = false
+            }
         }
+    } else {
+        valid = false
     }
 
-    return true
+    return {
+        "valid": valid,
+        "tail": tail.substr(alphaTemplate.length)
+    };
 }
 
 function validatePlate(country, plate) {
@@ -40,8 +63,7 @@ function validatePlate(country, plate) {
 
     for(i in templates.get(country)) {
         var template = templates.get(country)[i]
-        var valid = validatePlateAgainstTemplate(plate, template)
-        if (valid) {
+        if (validatePlateAgainstTemplate(plate, template)) {
             return true
         }
     }
@@ -51,18 +73,15 @@ function validatePlate(country, plate) {
 
 function validatePlateAgainstTemplate(plate, template) {
     var remainder = plate;
-    var remainderIdx = 0
     for (i in template.segments) {
         var templateSegment = template.segments[i]
-        var plateSegment = remainder.substr(0, templateSegment.length);
 
-        var plateSegmentValid = segmentValidators.get(templateSegment.type)(plateSegment, templateSegment)
-        if (!plateSegmentValid) {
+        var result = processors.get(templateSegment.type)(remainder, templateSegment)
+        if (!result.valid) {
             return false;
         }
 
-        remainder = plate.substr(remainderIdx + templateSegment.length)
-        remainderIdx = remainderIdx + templateSegment.length
+        remainder = result.tail
     }
 
     return remainder.length == 0;
