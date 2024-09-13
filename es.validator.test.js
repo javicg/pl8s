@@ -1,33 +1,49 @@
 const validatePlate = require('./validator');
 
-test('ES should be valid', () => {
-  expect(validatePlate("ES", "1234BBC")).toBe(true);
-});
+describe("spanish plates", () => {
+  describe("current system", () => {
+      valid("1234BBC")
 
-test('ES invalid (numeric segment too short)', () => {
-  expect(validatePlate("ES", "123BBC")).toBe(false);
-});
+      invalid("123BBC")
+      invalid("12345BBC")
 
-test('ES invalid (numeric segment too long)', () => {
-  expect(validatePlate("ES", "12345BBC")).toBe(false);
-});
+      invalid("1234BB")
+      invalid("1234BBCD")
+      invalid("1234AEI")
 
-test('ES invalid (alpha segment too short)', () => {
-  expect(validatePlate("ES", "1234BB")).toBe(false);
-});
+      invalid("XX1234BBC")
+      invalid("1234BBCYY")
+  })
 
-test('ES invalid (alpha segment too long)', () => {
-  expect(validatePlate("ES", "1234BBCD")).toBe(false);
-});
+  describe("provincial system (1970-2000)", () => {
+    valid("PO9385BH")
+    valid("SE1234DL")
+    valid("M0001AC")
+    valid("MA0001AC")
 
-test('ES invalid (alpha segment invalid)', () => {
-  expect(validatePlate("ES", "1234AEI")).toBe(false);
-});
+    invalid("ÑA0001AC")
+    invalid("QA0001AC")
+    invalid("RA0001AC")
 
-test('ES invalid (additional segment before)', () => {
-  expect(validatePlate("ES", "XX1234BBC")).toBe(false);
-});
+    invalid("SE1234QL")
+    invalid("SE1234ÑL")
+    invalid("SE1234RL")
 
-test('ES invalid (additional segment after)', () => {
-  expect(validatePlate("ES", "1234BBCYY")).toBe(false);
-});
+    invalid("SE1234DA")
+    invalid("SE1234DE")
+    invalid("SE1234DI")
+    invalid("SE1234DO")
+  })
+})
+
+function valid(plate) {
+  test("[OK] "+plate, () => {
+    expect(validatePlate("ES", plate)).toBe(true);
+  });
+}
+
+function invalid(plate) {
+  test("[NOK] "+plate, () => {
+    expect(validatePlate("ES", plate)).toBe(false);
+  });
+}

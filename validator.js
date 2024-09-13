@@ -7,7 +7,8 @@ const templates = new Map([
 const processors = new Map([
     ["NUMERIC", processNumericSegment],
     ["ALPHA", processAlphaSegment],
-    ["ALPHA_RESTRICTED", processAlphaRestrictedSegment]
+    ["ALPHA_RESTRICTED", processAlphaRestrictedSegment],
+    ["ENUMERATION", processEnumeration]
 ])
 
 function processNumericSegment(tail, numericTemplate) {
@@ -53,7 +54,22 @@ function processAlphaRestrictedSegment(tail, alphaTemplate) {
     return {
         "valid": valid,
         "tail": tail.substr(alphaTemplate.length)
-    };
+    }
+}
+
+function processEnumeration(tail, enumTemplate) {
+    var match = ""
+    for(i in enumTemplate.values) {
+        var candidate = enumTemplate.values[i]
+        if (tail.search(candidate) == 0 && candidate.length > match.length) {
+            match = candidate
+        }
+    }
+
+    return {
+        "valid": match.length > 0,
+        "tail": tail.substr(match.length)
+    }
 }
 
 function validatePlate(country, plate) {
