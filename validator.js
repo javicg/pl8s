@@ -12,11 +12,9 @@ const processors = new Map([
 ])
 
 function processNumericSegment(tail, template) {
-    segment = tail.substr(0, template.length)
-
     var match = (template.padding)
-      ? segment.match(/[0-9]+/)
-      : segment.match(/[1-9][0-9]*/)
+      ? tail.match(/^[0-9]+/)
+      : tail.match(/^[1-9][0-9]*/)
 
     if (!match) {
         return {
@@ -24,43 +22,46 @@ function processNumericSegment(tail, template) {
         }
     }
 
-    var lengthOk = (m) => m.length == template.length || !template.padding
-
+    var lengthOk = (m) => m.length == template.length || (!template.padding && m.length < template.length)
     return {
-        "valid": match.index == 0 && lengthOk(match[0]),
+        "valid": lengthOk(match[0]),
         "tail": tail.substr(match[0].length)
     }
 }
 
 function processAlphaSegment(tail, template) {
-    var valid = false
-    if (tail.length >= template.length) {
-        segment = tail.substr(0, template.length)
-        valid = segment.search(/^[A-Z]+/i) >= 0
+    var match = tail.match(/^[A-Z]+/)
+    if (!match) {
+        return {
+            "valid": false
+        }
     }
 
     return {
-        "valid": valid,
-        "tail": tail.substr(template.length)
+        "valid": match[0].length == template.length,
+        "tail": tail.substr(match[0].length)
     }
 }
 
 function processAlphaRestrictedSegment(tail, template) {
-    var valid = true
-    if (tail.length >= template.length) {
-        segment = tail.substr(0, template.length)
-        for (i in segment) {
-            var char = segment[i]
-            if (!template.allowed.includes(char)) {
-                valid = false
+    if (tail.length < template.length) {
+        return {
+            "valid": false
+        }
+    }
+
+    segment = tail.substr(0, template.length)
+    for (i in segment) {
+        var char = segment[i]
+        if (!template.allowed.includes(char)) {
+            return {
+                "valid": false
             }
         }
-    } else {
-        valid = false
     }
 
     return {
-        "valid": valid,
+        "valid": true,
         "tail": tail.substr(template.length)
     }
 }
@@ -80,14 +81,14 @@ function processEnumeration(tail, template) {
     }
 }
 
-function validatePlate(country, plate) {
+function validate(country, plate) {
     if (!templates.has(country)) {
         return false
     }
 
     for(i in templates.get(country)) {
         var template = templates.get(country)[i]
-        if (validatePlateAgainstTemplate(plate, template)) {
+        if (validateAgainstTemplate(plate, template)) {
             return true
         }
     }
@@ -95,7 +96,7 @@ function validatePlate(country, plate) {
     return false
 }
 
-function validatePlateAgainstTemplate(plate, template) {
+function validateAgainstTemplate(plate, template) {
     var remainder = plate
     for (i in template.segments) {
         var templateSegment = template.segments[i]
@@ -111,4 +112,4 @@ function validatePlateAgainstTemplate(plate, template) {
     return remainder.length == 0
 }
 
-exports.validatePlate = validatePlate
+exports.validate = validate

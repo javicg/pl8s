@@ -49,12 +49,12 @@ describe("spanish plates", () => {
 
 function valid(plate) {
   test("[OK] "+plate, () => {
-    expect(validator.validatePlate("ES", plate)).toBe(true)
+    expect(validator.validate("ES", plate)).toBe(true)
   })
 }
 
 function invalid(plate) {
   test("[NOK] "+plate, () => {
-    expect(validator.validatePlate("ES", plate)).toBe(false)
+    expect(validator.validate("ES", plate)).toBe(false)
   })
 }
