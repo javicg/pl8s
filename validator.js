@@ -11,39 +11,47 @@ const processors = new Map([
     ["ENUMERATION", processEnumeration]
 ])
 
-function processNumericSegment(tail, numericTemplate) {
-    var valid = false
-    if (tail.length >= numericTemplate.length) {
-        segment = tail.substr(0, numericTemplate.length)
-        valid = segment.search(/^[0-9]+$/i) >= 0
+function processNumericSegment(tail, template) {
+    segment = tail.substr(0, template.length)
+
+    var match = (template.padding)
+      ? segment.match(/[0-9]+/)
+      : segment.match(/[1-9][0-9]*/)
+
+    if (!match) {
+        return {
+            "valid": false
+        }
     }
 
+    var lengthOk = (m) => m.length == template.length || !template.padding
+
     return {
-        "valid": valid,
-        "tail": tail.substr(numericTemplate.length)
+        "valid": match.index == 0 && lengthOk(match[0]),
+        "tail": tail.substr(match[0].length)
     }
 }
 
-function processAlphaSegment(tail, alphaTemplate) {
+function processAlphaSegment(tail, template) {
     var valid = false
-    if (tail.length >= alphaTemplate.length) {
-        segment = tail.substr(0, alphaTemplate.length)
+    if (tail.length >= template.length) {
+        segment = tail.substr(0, template.length)
         valid = segment.search(/^[A-Z]+/i) >= 0
     }
 
     return {
         "valid": valid,
-        "tail": tail.substr(alphaTemplate.length)
+        "tail": tail.substr(template.length)
     }
 }
 
-function processAlphaRestrictedSegment(tail, alphaTemplate) {
+function processAlphaRestrictedSegment(tail, template) {
     var valid = true
-    if (tail.length >= alphaTemplate.length) {
-        segment = tail.substr(0, alphaTemplate.length)
+    if (tail.length >= template.length) {
+        segment = tail.substr(0, template.length)
         for (i in segment) {
             var char = segment[i]
-            if (!alphaTemplate.allowed.includes(char)) {
+            if (!template.allowed.includes(char)) {
                 valid = false
             }
         }
@@ -53,14 +61,14 @@ function processAlphaRestrictedSegment(tail, alphaTemplate) {
 
     return {
         "valid": valid,
-        "tail": tail.substr(alphaTemplate.length)
+        "tail": tail.substr(template.length)
     }
 }
 
-function processEnumeration(tail, enumTemplate) {
+function processEnumeration(tail, template) {
     var match = ""
-    for(i in enumTemplate.values) {
-        var candidate = enumTemplate.values[i]
+    for(i in template.values) {
+        var candidate = template.values[i]
         if (tail.search(candidate) == 0 && candidate.length > match.length) {
             match = candidate
         }

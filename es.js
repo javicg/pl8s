@@ -1,5 +1,20 @@
-// https://es.wikipedia.org/wiki/Matr%C3%ADculas_automovil%C3%ADsticas_de_Espa%C3%B1a
-// TODO Add provincial system 1900-1970
+// Source: https://es.wikipedia.org/wiki/Matr%C3%ADculas_automovil%C3%ADsticas_de_Espa%C3%B1a
+
+const provincial1900Enumeration = {
+  "type": "ENUMERATION",
+  "values": ["A","AL","ALB","AB","AV","B","BA","BI","BU","C","CA","CAC","CC","CAS","CS","CR","CO","CU","GE","GR","GU","H","HU","J","L","LE","LO","LU","M","MA","MU","O","OR","P","PA","NA","PM","PO","S","SA","SS","SEG","SG","SE","SO","T","TE","GC","TF","TER","TE","TO","V","VA","VI","Z","ZA","CE","ML","AOE","FP","I","IF","ME","RM","SHA","SH","TA","TEG","TG"]
+}
+const provincial1900 = {
+  "country": "ES",
+  "segments": [
+    provincial1900Enumeration,
+    {
+      "type": "NUMERIC",
+      "length": 6,
+      "padding": false
+    }
+  ]
+}
 
 const provincial1970Enumeration = {
   "type": "ENUMERATION",
@@ -15,26 +30,26 @@ const provincial1970SecondAlpha = {
   "length": 1,
   "allowed": ["B","C","D","F","G","H","J","K","L","M","N","P","S","T","U","V","W","X","Y","Z"]
 }
-
 const provincial1970SingleLetter = {
   "country": "ES",
   "segments": [
     provincial1970Enumeration,
     {
       "type": "NUMERIC",
-      "length": 4
+      "length": 4,
+      "padding": true
     },
     provincial1970FirstAlpha
   ]
 }
-
 const provincial1970DoubleLetter = {
   "country": "ES",
   "segments": [
     provincial1970Enumeration,
     {
       "type": "NUMERIC",
-      "length": 4
+      "length": 4,
+      "padding": true
     },
     provincial1970FirstAlpha,
     provincial1970SecondAlpha
@@ -46,7 +61,8 @@ const current = {
   "segments": [
     {
       "type": "NUMERIC",
-      "length": 4
+      "length": 4,
+      "padding": true
     },
     {
       "type": "ALPHA_RESTRICTED",
@@ -56,4 +72,4 @@ const current = {
   ]
 }
 
-exports.templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter]
+exports.templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter, provincial1900]

@@ -20,7 +20,9 @@ describe("spanish plates", () => {
     valid("SE1234DL")
     valid("M0001AC")
     valid("MA0001AC")
+    valid("GC7777AC")
 
+    invalid("G7777AC")
     invalid("ÑA0001AC")
     invalid("QA0001AC")
     invalid("RA0001AC")
@@ -33,6 +35,15 @@ describe("spanish plates", () => {
     invalid("SE1234DE")
     invalid("SE1234DI")
     invalid("SE1234DO")
+  })
+
+  describe("provincial system (1900-1970)", () => {
+    valid("A1")
+    valid("A100000")
+    valid("CAS100000")
+
+    invalid("M0001")
+    invalid("M1234567")
   })
 })
 
