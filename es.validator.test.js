@@ -2,17 +2,17 @@ const validator = require('./validator')
 
 describe("spanish plates", () => {
   describe("current system", () => {
-      valid("1234BBC")
+    valid("1234BBC")
 
-      invalid("123BBC")
-      invalid("12345BBC")
+    invalid("123BBC")
+    invalid("12345BBC")
 
-      invalid("1234BB")
-      invalid("1234BBCD")
-      invalid("1234AEI")
+    invalid("1234BB")
+    invalid("1234BBCD")
+    invalid("1234AEI")
 
-      invalid("XX1234BBC")
-      invalid("1234BBCYY")
+    invalid("XX1234BBC")
+    invalid("1234BBCYY")
   })
 
   describe("provincial system (1970-2000)", () => {
