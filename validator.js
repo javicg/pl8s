@@ -1,7 +1,9 @@
 const es = require('./es')
+const be = require('./be')
 
 const templates = new Map([
-    ["ES", es.templates]
+    ["ES", es.templates],
+    ["BE", be.templates]
 ])
 
 const processors = new Map([
