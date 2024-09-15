@@ -73,6 +73,8 @@ const current = {
 }
 
 exports.templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter, provincial1900]
+
+// Visible for testing (TODO find a better way...)
 exports.current = current
 exports._1970AA = provincial1970DoubleLetter
 exports._1970A = provincial1970SingleLetter

@@ -50,6 +50,8 @@ const current = {
 }
 
 exports.templates = [current, _2008, _1973]
+
+// Visible for testing (TODO find a better way...)
 exports.current = current
 exports._2008 = _2008
 exports._1973 = _1973

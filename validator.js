@@ -115,4 +115,6 @@ function validateAgainstTemplate(plate, template) {
 }
 
 exports.validate = validate
+
+// Visible for testing (TODO find a better way...)
 exports.validateAgainstTemplate = validateAgainstTemplate
