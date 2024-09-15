@@ -73,3 +73,7 @@ const current = {
 }
 
 exports.templates = [current, provincial1970DoubleLetter, provincial1970SingleLetter, provincial1900]
+exports.current = current
+exports._1970AA = provincial1970DoubleLetter
+exports._1970A = provincial1970SingleLetter
+exports._1900 = provincial1900

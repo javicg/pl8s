@@ -1,7 +1,20 @@
 const validator = require('./validator')
+const es = require('./es')
 
 describe("spanish plates", () => {
   describe("current system", () => {
+    function valid(plate) {
+      test("[OK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, es.current)).toBe(true)
+      })
+    }
+
+    function invalid(plate) {
+      test("[NOK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, es.current)).toBe(false)
+      })
+    }
+
     valid("1234BBC")
 
     invalid("123BBC")
@@ -16,6 +29,24 @@ describe("spanish plates", () => {
   })
 
   describe("provincial system (1970-2000)", () => {
+    function valid(plate) {
+      test("[OK] "+plate, () => {
+        var singleLetter = validator.validateAgainstTemplate(plate, es._1970A)
+        var doubleLetter = validator.validateAgainstTemplate(plate, es._1970AA)
+
+        expect(singleLetter || doubleLetter).toBe(true)
+      })
+    }
+
+    function invalid(plate) {
+      test("[NOK] "+plate, () => {
+        var singleLetter = validator.validateAgainstTemplate(plate, es._1970A)
+        var doubleLetter = validator.validateAgainstTemplate(plate, es._1970AA)
+
+        expect(singleLetter || doubleLetter).toBe(false)
+      })
+    }
+
     valid("PO9385BH")
     valid("SE1234DL")
     valid("M0001AC")
@@ -38,6 +69,18 @@ describe("spanish plates", () => {
   })
 
   describe("provincial system (1900-1970)", () => {
+    function valid(plate) {
+      test("[OK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, es._1900)).toBe(true)
+      })
+    }
+
+    function invalid(plate) {
+      test("[NOK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, es._1900)).toBe(false)
+      })
+    }
+
     valid("A1")
     valid("A100000")
     valid("CAS100000")
@@ -46,15 +89,3 @@ describe("spanish plates", () => {
     invalid("M1234567")
   })
 })
-
-function valid(plate) {
-  test("[OK] "+plate, () => {
-    expect(validator.validate("ES", plate)).toBe(true)
-  })
-}
-
-function invalid(plate) {
-  test("[NOK] "+plate, () => {
-    expect(validator.validate("ES", plate)).toBe(false)
-  })
-}

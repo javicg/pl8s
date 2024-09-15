@@ -115,3 +115,4 @@ function validateAgainstTemplate(plate, template) {
 }
 
 exports.validate = validate
+exports.validateAgainstTemplate = validateAgainstTemplate

@@ -1,5 +1,20 @@
 // Source: https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Belgium
 
+const _1973 = {
+  "country": "BE",
+  "segments": [
+    {
+      "type": "ALPHA",
+      "length": 3
+    },
+    {
+      "type": "NUMERIC",
+      "length": 3,
+      "padding": true
+    }
+  ]
+}
+
 const _2008 = {
   "country": "BE",
   "segments": [
@@ -34,4 +49,7 @@ const current = {
   ]
 }
 
-exports.templates = [current, _2008]
+exports.templates = [current, _2008, _1973]
+exports.current = current
+exports._2008 = _2008
+exports._1973 = _1973
