@@ -80,4 +80,29 @@ describe("belgian plates", () => {
     invalid("ABCD123")
     invalid("ABCD1234")
   })
+
+  describe("1971", () => {
+    function valid(plate) {
+      test("[OK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, be._1971)).toBe(true)
+      })
+    }
+
+    function invalid(plate) {
+      test("[NOK] "+plate, () => {
+        expect(validator.validateAgainstTemplate(plate, be._1971)).toBe(false)
+      })
+    }
+
+    valid("A123A")
+
+    invalid("123A")
+    invalid("A123")
+    invalid("A12A")
+
+    invalid("AA")
+    invalid("123")
+    invalid("123AA")
+    invalid("AA123")
+  })
 })
