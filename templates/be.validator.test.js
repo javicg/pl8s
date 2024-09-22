@@ -1,4 +1,4 @@
-const validator = require('./validator')
+const validator = require('../validator/validator')
 const be = require('./be')
 
 describe("belgian plates", () => {
@@ -17,10 +17,7 @@ describe("belgian plates", () => {
 
     valid("1AAA111")
 
-    // FIXME Valid on older systems, but not the new one
-    // Tests should use a particular system, without fallbacks
     invalid("AAA111")
-
     invalid("1AA111")
     invalid("1111")
     invalid("1AAA11")

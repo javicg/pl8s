@@ -1,5 +1,5 @@
-const es = require('./es')
-const be = require('./be')
+const es = require('../templates/es')
+const be = require('../templates/be')
 
 const templates = new Map([
     ["ES", es.templates],

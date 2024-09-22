@@ -1,4 +1,4 @@
-const validator = require('./validator')
+const validator = require('../validator/validator')
 const es = require('./es')
 
 describe("spanish plates", () => {
