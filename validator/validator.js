@@ -1,9 +1,7 @@
-const es = require('../templates/es')
-const be = require('../templates/be')
-
+// FIXME Load all templates (by directory)
 const templates = new Map([
-    ["ES", es.templates],
-    ["BE", be.templates]
+    ["ES", []],
+    ["BE", []]
 ])
 
 const processors = new Map([

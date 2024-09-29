@@ -1,19 +1,8 @@
-const validator = require('../validator/validator')
-const be = require('./be')
+const utils = require('./test_utils')
 
 describe("belgian plates", () => {
   describe("current system", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be.current)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be.current)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./be_2010.json')
 
     valid("1AAA111")
 
@@ -29,17 +18,7 @@ describe("belgian plates", () => {
   })
 
   describe("2008", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._2008)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._2008)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./be_2008.json')
 
     valid("123ABC")
 
@@ -54,17 +33,7 @@ describe("belgian plates", () => {
   })
 
   describe("1973", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._1973)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._1973)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./be_1973.json')
 
     valid("ABC123")
 
@@ -79,17 +48,7 @@ describe("belgian plates", () => {
   })
 
   describe("1971", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._1971)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, be._1971)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./be_1971.json')
 
     valid("A123A")
 

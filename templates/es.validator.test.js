@@ -1,19 +1,8 @@
-const validator = require('../validator/validator')
-const es = require('./es')
+const utils = require('./test_utils')
 
 describe("spanish plates", () => {
   describe("current system", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, es.current)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, es.current)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./es_2000.json')
 
     valid("1234BBC")
 
@@ -29,57 +18,51 @@ describe("spanish plates", () => {
   })
 
   describe("provincial system (1970-2000)", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        var singleLetter = validator.validateAgainstTemplate(plate, es._1970A)
-        var doubleLetter = validator.validateAgainstTemplate(plate, es._1970AA)
+    describe('single-letter ending', () => {
+      const {valid, invalid} = utils.testAgainst('./es_1970A.json')
 
-        expect(singleLetter || doubleLetter).toBe(true)
-      })
-    }
+      valid("PO9385B")
+      valid("SE1234D")
+      valid("M0001A")
+      valid("MA0001C")
+      valid("GC7777A")
 
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        var singleLetter = validator.validateAgainstTemplate(plate, es._1970A)
-        var doubleLetter = validator.validateAgainstTemplate(plate, es._1970AA)
+      invalid("ÑA0001A")
+      invalid("QA0001A")
+      invalid("RA0001A")
 
-        expect(singleLetter || doubleLetter).toBe(false)
-      })
-    }
+      invalid("SE1234Q")
+      invalid("SE1234Ñ")
+      invalid("SE1234R")
+    })
 
-    valid("PO9385BH")
-    valid("SE1234DL")
-    valid("M0001AC")
-    valid("MA0001AC")
-    valid("GC7777AC")
+    describe('double-lettre ending', () => {
+      const {valid, invalid} = utils.testAgainst('./es_1970AA.json')
 
-    invalid("G7777AC")
-    invalid("ÑA0001AC")
-    invalid("QA0001AC")
-    invalid("RA0001AC")
+      valid("PO9385BH")
+      valid("SE1234DL")
+      valid("M0001AC")
+      valid("MA0001AC")
+      valid("GC7777AC")
 
-    invalid("SE1234QL")
-    invalid("SE1234ÑL")
-    invalid("SE1234RL")
+      invalid("G7777AC")
+      invalid("ÑA0001AC")
+      invalid("QA0001AC")
+      invalid("RA0001AC")
 
-    invalid("SE1234DA")
-    invalid("SE1234DE")
-    invalid("SE1234DI")
-    invalid("SE1234DO")
+      invalid("SE1234QL")
+      invalid("SE1234ÑL")
+      invalid("SE1234RL")
+
+      invalid("SE1234DA")
+      invalid("SE1234DE")
+      invalid("SE1234DI")
+      invalid("SE1234DO")
+    })
   })
 
   describe("provincial system (1900-1970)", () => {
-    function valid(plate) {
-      test("[OK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, es._1900)).toBe(true)
-      })
-    }
-
-    function invalid(plate) {
-      test("[NOK] "+plate, () => {
-        expect(validator.validateAgainstTemplate(plate, es._1900)).toBe(false)
-      })
-    }
+    const {valid, invalid} = utils.testAgainst('./es_1900.json')
 
     valid("A1")
     valid("A100000")

@@ -1,0 +1,14 @@
+{
+  "country": "BE",
+  "segments": [
+    {
+      "type": "ALPHA",
+      "length": 3
+    },
+    {
+      "type": "NUMERIC",
+      "length": 3,
+      "padding": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "country": "ES",
+  "segments": [
+    {
+      "type": "ENUMERATION",
+      "values": ["A","AL","ALB","AB","AV","B","BA","BI","BU","C","CA","CAC","CC","CAS","CS","CR","CO","CU","GE","GR","GU","H","HU","J","L","LE","LO","LU","M","MA","MU","O","OR","P","PA","NA","PM","PO","S","SA","SS","SEG","SG","SE","SO","T","TE","GC","TF","TER","TE","TO","V","VA","VI","Z","ZA","CE","ML","AOE","FP","I","IF","ME","RM","SHA","SH","TA","TEG","TG"]
+    },
+    {
+      "type": "NUMERIC",
+      "length": 6,
+      "padding": false
+    }
+  ]
+}
