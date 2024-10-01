@@ -1,8 +1,18 @@
-// FIXME Load all templates (by directory)
-const templates = new Map([
-    ["ES", []],
-    ["BE", []]
-])
+const fs = require('fs');
+const path = require('path')
+
+const templates = new Map()
+
+fs.readdirSync('./templates')
+.filter(file => path.extname(file) === '.json')
+.forEach(file => {
+  rawData = fs.readFileSync(path.join('./templates', file), {encoding: "utf8"});
+  template = JSON.parse(rawData);
+
+  countryTemplates = templates.get(template.country) || []
+  countryTemplates.push(template)
+  templates.set(template.country, countryTemplates)
+})
 
 const processors = new Map([
     ["NUMERIC", processNumericSegment],
