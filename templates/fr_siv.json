@@ -1,0 +1,20 @@
+{
+  "country": "FR",
+  "segments": [
+    {
+      "type": "ALPHA_RESTRICTED",
+      "length": 2,
+      "allowed": ["A","B","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"]
+    },
+    {
+      "type": "NUMERIC",
+      "length": 3,
+      "padding": true
+    },
+    {
+      "type": "ALPHA_RESTRICTED",
+      "length": 2,
+      "allowed": ["A","B","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"]
+    }
+  ]
+}
