@@ -24,8 +24,13 @@ describe("validator works for all supported countries", () => {
   validateCountry("ES", "2008ZGZ")
 })
 
+it("fails gracefully when country is not supported", () => {
+  expect(validator.validate("??", "1234")).toBe(false)
+})
+
 function validateCountry(country, validPlate) {
   test(country+" plates", () => {
     expect(validator.validate(country, validPlate)).toBe(true)
+    expect(validator.validate(country, "¯\_(ツ)_/¯")).toBe(false)
   })
 }
