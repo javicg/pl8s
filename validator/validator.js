@@ -132,21 +132,6 @@ function processEnumeration(tail, template) {
     }
 }
 
-function validate(country, plate) {
-    if (!templates.has(country)) {
-        return false
-    }
-
-    for(i in templates.get(country)) {
-        var template = templates.get(country)[i]
-        if (validateAgainstTemplate(plate, template)) {
-            return true
-        }
-    }
-
-    return false
-}
-
 function validateAgainstTemplate(plate, template) {
     var remainder = plate
     for (i in template.segments) {
@@ -163,8 +148,22 @@ function validateAgainstTemplate(plate, template) {
     return remainder.length == 0
 }
 
-exports.validate = validate
+exports.validate = (country, plate) => {
+    if (!templates.has(country)) {
+        return false
+    }
 
-// Visible for testing (TODO find a better way...)
-exports.templateSchema = templateSchema
-exports.validateAgainstTemplate = validateAgainstTemplate
+    for(i in templates.get(country)) {
+        var template = templates.get(country)[i]
+        if (validateAgainstTemplate(plate, template)) {
+            return true
+        }
+    }
+
+    return false
+}
+
+exports.__internal = process.env.NODE_ENV === "test" ? {
+    templateSchema,
+    validateAgainstTemplate
+} : undefined
