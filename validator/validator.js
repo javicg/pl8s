@@ -14,6 +14,47 @@ fs.readdirSync('./templates')
   templates.set(template.country, countryTemplates)
 })
 
+const templateSchema = {
+    properties: {
+        country: {type: "string"},
+        segments: {
+            elements: {
+                discriminator: "type",
+                mapping: {
+                    "NUMERIC": {
+                        properties: {
+                            length: {type: "int32"}
+                        },
+                        optionalProperties: {
+                            padding: {type: "boolean"}
+                        }
+                    },
+                    "ALPHA": {
+                        properties: {
+                            length: {type: "int32"}
+                        }
+                    },
+                    "ALPHA_RESTRICTED": {
+                        properties: {
+                            length: {type: "int32"},
+                            allowed: {
+                                elements: {type: "string"}
+                            }
+                        }
+                    },
+                    "ENUMERATION": {
+                        properties: {
+                            values: {
+                                elements: {type: "string"}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 const processors = new Map([
     ["NUMERIC", processNumericSegment],
     ["ALPHA", processAlphaSegment],
@@ -125,4 +166,5 @@ function validateAgainstTemplate(plate, template) {
 exports.validate = validate
 
 // Visible for testing (TODO find a better way...)
+exports.templateSchema = templateSchema
 exports.validateAgainstTemplate = validateAgainstTemplate
