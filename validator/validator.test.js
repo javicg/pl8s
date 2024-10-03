@@ -25,7 +25,7 @@ describe("validator works for all supported countries", () => {
 })
 
 it("fails gracefully when country is not supported", () => {
-  expect(validator.validate("??", "1234")).toBe(false)
+  expect(validator.validate("¯\_(ツ)_/¯", "ABC1234")).toBe(false)
 })
 
 function validateCountry(country, validPlate) {
