@@ -34,12 +34,10 @@ const templateSchema = {
                             length: {type: "int32"}
                         }
                     },
-                    "ALPHA_RESTRICTED": {
+                    "UNIFORM_REGEX": {
                         properties: {
                             length: {type: "int32"},
-                            allowed: {
-                                elements: {type: "string"}
-                            }
+                            regex: {type: "string"}
                         }
                     },
                     "ENUMERATION": {
@@ -58,7 +56,7 @@ const templateSchema = {
 const processors = new Map([
     ["NUMERIC", processNumericSegment],
     ["ALPHA", processAlphaSegment],
-    ["ALPHA_RESTRICTED", processAlphaRestrictedSegment],
+    ["UNIFORM_REGEX", processUniformRegex],
     ["ENUMERATION", processEnumeration]
 ])
 
@@ -94,26 +92,17 @@ function processAlphaSegment(tail, template) {
     }
 }
 
-function processAlphaRestrictedSegment(tail, template) {
-    if (tail.length < template.length) {
+function processUniformRegex(tail, template) {
+    var match = tail.match(new RegExp(template.regex + `{${template.length}}`))
+    if (!match || match.index != 0) {
         return {
             "valid": false
         }
     }
 
-    segment = tail.substr(0, template.length)
-    for (i in segment) {
-        var char = segment[i]
-        if (!template.allowed.includes(char)) {
-            return {
-                "valid": false
-            }
-        }
-    }
-
     return {
-        "valid": true,
-        "tail": tail.substr(template.length)
+        "valid": match[0].length == template.length,
+        "tail": tail.substr(match[0].length)
     }
 }
 

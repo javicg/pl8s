@@ -11,14 +11,14 @@
       "padding": true
     },
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 1,
-      "allowed": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","S","T","U","V","W","X","Y","Z"]
+      "regex": "[A-PS-Z]"
     },
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 1,
-      "allowed": ["B","C","D","F","G","H","J","K","L","M","N","P","S","T","U","V","W","X","Y","Z"]
+      "regex": "[B-DF-HJ-NPS-Z]"
     }
   ]
 }

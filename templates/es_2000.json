@@ -7,9 +7,9 @@
       "padding": true
     },
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 3,
-      "allowed": ["B","C","D","F","G","H","J","K","L","M","N","P","R","S","T","V","W","X","Y","Z"]
+      "regex": "[B-DF-HJ-NPR-TV-Z]"
     }
   ]
 }

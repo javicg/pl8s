@@ -11,9 +11,9 @@
       "padding": true
     },
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 1,
-      "allowed": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","S","T","U","V","W","X","Y","Z"]
+      "regex": "[A-PS-Z]"
     }
   ]
 }

@@ -2,9 +2,9 @@
   "country": "FR",
   "segments": [
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 2,
-      "allowed": ["A","B","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"]
+      "regex": "[A-HJ-NP-TV-Z]"
     },
     {
       "type": "NUMERIC",
@@ -12,9 +12,9 @@
       "padding": true
     },
     {
-      "type": "ALPHA_RESTRICTED",
+      "type": "UNIFORM_REGEX",
       "length": 2,
-      "allowed": ["A","B","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"]
+      "regex": "[A-HJ-NP-TV-Z]"
     }
   ]
 }
