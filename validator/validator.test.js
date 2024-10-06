@@ -15,7 +15,9 @@ describe("all country templates are valid", () => {
   test.each(templates)("%s is valid", (file) => {
     rawData = fs.readFileSync(path.join('./templates', file), {encoding: "utf8"});
     template = JSON.parse(rawData);
-    expect(validate(template)).toBe(true);
+
+    const valid = validate(template);
+    expect(validate.errors).toBeNull();
   })
 })
 
