@@ -14,7 +14,7 @@ fs.readdirSync('./templates')
   templates.set(template.country, countryTemplates)
 })
 
-const segmentTypes = new Map([
+const segmentTypeDefs = new Map([
     ["NUMERIC", {
         "processor": processNumericSegment,
         "schema": {
@@ -55,18 +55,20 @@ const segmentTypes = new Map([
     }]
 ])
 
-const templateSchema = {
-    properties: {
-        country: {type: "string"},
-        segments: {
-            elements: {
-                discriminator: "type",
-                mapping: {
-                    "NUMERIC": segmentTypes.get("NUMERIC").schema,
-                    "ALPHA": segmentTypes.get("ALPHA").schema,
-                    "UNIFORM_REGEX": segmentTypes.get("UNIFORM_REGEX").schema,
-                    "ENUMERATION": segmentTypes.get("ENUMERATION").schema
-                }
+function getTemplateSchema() {
+    var templateElements = {
+        discriminator: "type",
+        mapping: {}
+    }
+    segmentTypeDefs.forEach((def, name) => {
+        templateElements.mapping[name] = def.schema
+    })
+
+    return {
+        properties: {
+            country: {type: "string"},
+            segments: {
+                elements: templateElements
             }
         }
     }
@@ -138,7 +140,7 @@ function validateAgainstTemplate(plate, template) {
     for (i in template.segments) {
         var templateSegment = template.segments[i]
 
-        var result = segmentTypes.get(templateSegment.type).processor(remainder, templateSegment)
+        var result = segmentTypeDefs.get(templateSegment.type).processor(remainder, templateSegment)
         if (!result.valid) {
             return false
         }
@@ -165,6 +167,6 @@ exports.validate = (country, plate) => {
 }
 
 exports.__internal = process.env.NODE_ENV === "test" ? {
-    templateSchema,
+    getTemplateSchema,
     validateAgainstTemplate
 } : undefined

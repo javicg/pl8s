@@ -7,7 +7,7 @@ const ajv = new Ajv({allErrors: true})
 const validator = require('./validator')
 
 describe("all country templates are valid", () => {
-  const validate = ajv.compile(validator.__internal.templateSchema)
+  const validate = ajv.compile(validator.__internal.getTemplateSchema())
 
   const templates = fs.readdirSync('./templates')
     .filter(file => path.extname(file) === '.json')
