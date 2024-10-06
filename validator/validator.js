@@ -14,6 +14,47 @@ fs.readdirSync('./templates')
   templates.set(template.country, countryTemplates)
 })
 
+const segmentTypes = new Map([
+    ["NUMERIC", {
+        "processor": processNumericSegment,
+        "schema": {
+            properties: {
+                length: {type: "int32"}
+            },
+            optionalProperties: {
+                padding: {type: "boolean"}
+            }
+        }
+    }],
+    ["ALPHA", {
+        "processor": processAlphaSegment,
+        "schema": {
+            properties: {
+                length: {type: "int32"}
+            }
+        }
+    }],
+    ["UNIFORM_REGEX", {
+        "processor": processUniformRegex,
+        "schema": {
+            properties: {
+                length: {type: "int32"},
+                regex: {type: "string"}
+            }
+        }
+    }],
+    ["ENUMERATION", {
+        "processor": processEnumeration,
+        "schema": {
+            properties: {
+                values: {
+                    elements: {type: "string"}
+                }
+            }
+        }
+    }]
+])
+
 const templateSchema = {
     properties: {
         country: {type: "string"},
@@ -21,44 +62,15 @@ const templateSchema = {
             elements: {
                 discriminator: "type",
                 mapping: {
-                    "NUMERIC": {
-                        properties: {
-                            length: {type: "int32"}
-                        },
-                        optionalProperties: {
-                            padding: {type: "boolean"}
-                        }
-                    },
-                    "ALPHA": {
-                        properties: {
-                            length: {type: "int32"}
-                        }
-                    },
-                    "UNIFORM_REGEX": {
-                        properties: {
-                            length: {type: "int32"},
-                            regex: {type: "string"}
-                        }
-                    },
-                    "ENUMERATION": {
-                        properties: {
-                            values: {
-                                elements: {type: "string"}
-                            }
-                        }
-                    }
+                    "NUMERIC": segmentTypes.get("NUMERIC").schema,
+                    "ALPHA": segmentTypes.get("ALPHA").schema,
+                    "UNIFORM_REGEX": segmentTypes.get("UNIFORM_REGEX").schema,
+                    "ENUMERATION": segmentTypes.get("ENUMERATION").schema
                 }
             }
         }
     }
 }
-
-const processors = new Map([
-    ["NUMERIC", processNumericSegment],
-    ["ALPHA", processAlphaSegment],
-    ["UNIFORM_REGEX", processUniformRegex],
-    ["ENUMERATION", processEnumeration]
-])
 
 function processNumericSegment(tail, template) {
     var match = (template.padding)
@@ -126,7 +138,7 @@ function validateAgainstTemplate(plate, template) {
     for (i in template.segments) {
         var templateSegment = template.segments[i]
 
-        var result = processors.get(templateSegment.type)(remainder, templateSegment)
+        var result = segmentTypes.get(templateSegment.type).processor(remainder, templateSegment)
         if (!result.valid) {
             return false
         }
