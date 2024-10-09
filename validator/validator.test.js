@@ -25,6 +25,7 @@ describe("validator works for all supported countries", () => {
   validateCountry("BE", "1ABC003")
   validateCountry("ES", "2008ZGZ")
   validateCountry("FR", "AA229DB")
+  validateCountry("IT", "AX700ZZ")
 })
 
 it("fails gracefully when country is not supported", () => {

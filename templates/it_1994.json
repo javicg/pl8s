@@ -1,0 +1,20 @@
+{
+  "country": "IT",
+  "segments": [
+    {
+      "type": "UNIFORM_REGEX",
+      "length": 2,
+      "regex": "[A-HJ-NPR-TV-Z]"
+    },
+    {
+      "type": "NUMERIC",
+      "length": 3,
+      "padding": true
+    },
+    {
+      "type": "UNIFORM_REGEX",
+      "length": 2,
+      "regex": "[A-HJ-NPR-TV-Z]"
+    }
+  ]
+}
